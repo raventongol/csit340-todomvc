@@ -1,13 +1,13 @@
 import { useState } from 'react'
 
-function Todos() {   
-const [text, setText] = useState('')
-    const [todos, setTodos] = useState([
+function Todos() {
+  const [text, setText] = useState('')
+  const [todos, setTodos] = useState([
     { id: 1, text: 'Learn the spread operator', completed: false },
     { id: 2, text: 'Set up Tailwind', completed: true },
   ])
-  
-    function handleSubmit(e) {
+
+  function handleSubmit(e) {
     e.preventDefault()
     const trimmed = text.trim()
     if (trimmed === '') {
@@ -16,6 +16,14 @@ const [text, setText] = useState('')
     const newTodo = { id: crypto.randomUUID(), text: trimmed, completed: false }
     setTodos([...todos, newTodo])
     setText('')
+  }
+
+  function handleToggle(id) {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    )
   }
 
   return (
@@ -52,7 +60,7 @@ const [text, setText] = useState('')
                 <input
                   type="checkbox"
                   checked={todo.completed}
-                  readOnly
+                  onChange={() => handleToggle(todo.id)}
                   className="ml-[15px] size-[30px] shrink-0 cursor-pointer accent-[#59a193]"
                 />
                 <span
